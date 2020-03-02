@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Covino</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_notification_channel_id" translatable="false">channel-01</string>
+
+    <string name="crash_report">متاسفانه در اجرای برنامه با مشکل مواجه شدیم.لطفا برای رفع مشکل لاگ را از طریق ایمیل ارسال نمایید!</string>
+    <string name="crash_title">اشکال در اجرای برنامه</string>
+</resources>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightbg"
+    android:orientation="vertical"
+    android:textDirection="rtl"
+    android:layoutDirection="rtl"
+    tools:context=".activity.VerifyActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/verify" />
+
+
+        <TextView
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="64dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="کد ارسال شده به تلفنتان را وارد کنید"
+            android:textAlignment="center"
+            android:textSize="28dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sms4"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/input_bg"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+            <EditText
+                android:id="@+id/sms3"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/input_bg"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+            <EditText
+                android:id="@+id/sms2"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/input_bg"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+            <EditText
+                android:id="@+id/sms1"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/input_bg"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_correct"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_outline_primary"
+                android:text="اصلاح شماره"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+            <Button
+                android:id="@+id/btn_resend"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_outline_primary"
+                android:text="ارسال مجدد کد"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_grey"
+            android:text="تایید"
+            android:textColor="@color/md_white_1000"
+            android:textSize="24dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

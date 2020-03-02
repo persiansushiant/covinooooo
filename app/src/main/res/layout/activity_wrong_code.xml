@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightbg"
+    android:orientation="vertical"
+    tools:context=".activity.VerifyActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/exclamation" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="کد وارد شده صحیح نیست"
+            android:textAlignment="center"
+            android:textColor="@color/md_red_500"
+            android:textSize="28dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_correct"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/btn_outline_primary"
+                android:text="اصلاح شماره"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28dp" />
+
+            <Button
+                android:id="@+id/btn_resend"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/btn_primary"
+                android:text="ارسال مجدد کد"
+                android:textColor="@color/md_white_1000"
+                android:textSize="28dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightbg"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".activity.VerifyActivity">
+
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/success" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="با موفقیت وارد شدید."
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="28dp" />
+
+</LinearLayout>

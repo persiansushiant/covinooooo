@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="city_parts" />
+
+    <string-array name="search_types">
+        <item>جستجو براساس قیمت (نزولی)</item>
+        <item>جستجو براساس قیمت (صعودی)</item>
+        <item>جستجو براساس موقعیت (نزدیکترین)</item>
+        <item>جستجو براساس موقعیت (دورترین)</item>
+    </string-array>
+</resources>
