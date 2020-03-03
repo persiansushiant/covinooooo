@@ -16,12 +16,15 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import ir.technopedia.covino.R;
+import ir.technopedia.covino.activity.MainActivity;
 import ir.technopedia.covino.model.Badge;
 
 public class AchivementAdapter extends RecyclerView.Adapter<AchivementAdapter.ViewHolder> {
 
-    private ArrayList<Badge> myArr=new ArrayList<>();
+    private ArrayList<Badge> myArr = new ArrayList<>();
     Context mCOntext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -30,16 +33,15 @@ public class AchivementAdapter extends RecyclerView.Adapter<AchivementAdapter.Vi
         ImageView image;
 
 
-
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
 
-    public AchivementAdapter(ArrayList<Badge> myArr,Context mCOntext    ) {
+    public AchivementAdapter(ArrayList<Badge> myArr, Context mCOntext) {
         this.myArr = myArr;
-        this.mCOntext=mCOntext;
+        this.mCOntext = mCOntext;
     }
 
     public void updateAdapter(ArrayList<Badge> myArr) {
@@ -55,17 +57,22 @@ public class AchivementAdapter extends RecyclerView.Adapter<AchivementAdapter.Vi
 
     @Override
     public void onBindViewHolder(AchivementAdapter.ViewHolder viewHolder, int position) {
-        Badge model = myArr.get(position);
-        Log.wtf("model get gotten",position+" "+model.getGotten());
+        final Badge model = myArr.get(position);
+        Log.wtf("model get gotten", position + " " + model.getGotten());
 
 
         if (model.getGotten().equalsIgnoreCase("1")) {
-            Log.wtf("success",model.getName());
+            Log.wtf("success", model.getName());
 //            viewHolder.image.setBackgroundResource(R.drawable.input_bg_white);
 //            viewHolder.image.setColorFilter(ContextCompat.getColor(viewHolder.image.getContext(), R.color.colorPrimary));
-            Glide.with(mCOntext).load( getImage(model.getName())).crossFade().into(viewHolder.image);
+            Glide.with(mCOntext).load(getImage(model.getName())).crossFade().into(viewHolder.image);
+            viewHolder.image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Crouton.makeText(((MainActivity)mCOntext),"شما این نشان را به دست آورده اید", Style.CONFIRM).show();
 
-
+                }
+            });
 
         } else {
 
@@ -77,6 +84,13 @@ public class AchivementAdapter extends RecyclerView.Adapter<AchivementAdapter.Vi
             colorMatrix.setSaturation(0);
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
             viewHolder.image.setColorFilter(filter);
+            viewHolder.image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Crouton.makeText(((MainActivity)mCOntext),model.getCondition(), Style.ALERT).show();
+                }
+            });
 
 //                Glide.with(mCOntext).load(R.drawable.a).crossFade().into(viewHolder.image);
         }
@@ -89,6 +103,7 @@ public class AchivementAdapter extends RecyclerView.Adapter<AchivementAdapter.Vi
 
         return drawableResourceId;
     }
+
     @Override
     public long getItemId(int position) {
         return position;

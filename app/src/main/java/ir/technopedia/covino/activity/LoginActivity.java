@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (input_phone.getText().toString().length() == 11)
                 getData(input_phone.getText().toString());
             else
-                showToast("لطفا شماره خود را وارد نمایید.",0);
+                showToast("لطفا شماره خود را وارد نمایید.", 0);
         }
     }
 
@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void getData(final String tokenx) {
         if (NetUtil.isNetworkAvailable(getBaseContext())) {
 
-       showPD();
+            showPD();
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.sendSms(API_BASE_URL + "api/app/sendSms", tokenx);
@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (response.isSuccessful()) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
-hidePD();
+                            hidePD();
 //                            showToast(jsonObject.getString("msg"));
                             if (jsonObject.getBoolean("success")) {
                                 VerifyActivity.launch(LoginActivity.this, tokenx);
@@ -128,7 +128,7 @@ hidePD();
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
+            showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
     }
 }

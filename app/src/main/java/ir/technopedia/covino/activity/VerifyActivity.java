@@ -98,7 +98,7 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onFinish() {
-                LoginActivity.launch(VerifyActivity.this, phone);
+//                LoginActivity.launch(VerifyActivity.this, phone);
                 exit();
             }
         };
