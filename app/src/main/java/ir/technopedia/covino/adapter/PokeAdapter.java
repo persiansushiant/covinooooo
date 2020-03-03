@@ -67,18 +67,18 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.ViewHolder> {
         viewHolder.time.setText(time[1] + " : " + time[0]);
 
         viewHolder.message.setText("شخص ناشناس با شماره " + model.getPokerPhone() + " به شما برای شستن دستانتان تلنگر زده است");
+        String pokerPhone = model.getPokerPhone();
+        pokerPhone = pokerPhone.replace(" ", "");
+        pokerPhone = pokerPhone.replace("+1", "");
+        pokerPhone = pokerPhone.replace("+98", "");
+        pokerPhone = pokerPhone.replace("+44", "");
         for (int i = 0; i < contactList.size(); i++) {
-            String pokerPhone = model.getPokerPhone();
-            pokerPhone = pokerPhone.replace(" ", "");
-            pokerPhone = pokerPhone.replace("+1", "");
-            pokerPhone = pokerPhone.replace("+98", "");
-            pokerPhone = pokerPhone.replace("+44", "");
             String phone = contactList.get(i).getPhone();
             phone = phone.replace(" ", "");
             phone = phone.replace("+1", "");
             phone = phone.replace("+98", "");
             phone = phone.replace("+44", "");
-            if (phone.equals(pokerPhone)) {
+            if (phone.contains(pokerPhone)) {
                 viewHolder.message.setText(contactList.get(i).getName() + " به شما برای شستن دستانتان تلنگر زده است");
                 break;
             }
