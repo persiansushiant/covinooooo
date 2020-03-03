@@ -64,9 +64,9 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.ViewHolder> {
         String[] date = model.getDate().split(" ");
         viewHolder.date.setText(date[0]);
         String[] time = date[1].split(":");
-        viewHolder.time.setText(time[0] + " : " + time[1]);
+        viewHolder.time.setText(time[1] + " : " + time[0]);
 
-        viewHolder.message.setText("شخص ناشناس با شماره " + model.getPokerPhone() + " شما را سیخونک زده است!");
+        viewHolder.message.setText("شخص ناشناس با شماره " + model.getPokerPhone() + " به شما برای شستن دستانتان تلنگر زده است");
         for (int i = 0; i < contactList.size(); i++) {
             String pokerPhone = model.getPokerPhone();
             pokerPhone = pokerPhone.replace(" ", "");
@@ -79,7 +79,7 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.ViewHolder> {
             phone = phone.replace("+98", "");
             phone = phone.replace("+44", "");
             if (phone.equals(pokerPhone)) {
-                viewHolder.message.setText(contactList.get(i).getName() + " شما را سیخونک زده است!");
+                viewHolder.message.setText(contactList.get(i).getName() + " به شما برای شستن دستانتان تلنگر زده است");
                 break;
             }
         }

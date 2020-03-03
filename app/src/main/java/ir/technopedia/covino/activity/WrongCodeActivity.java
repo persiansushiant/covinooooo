@@ -1,11 +1,8 @@
 package ir.technopedia.covino.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -38,7 +35,6 @@ public class WrongCodeActivity extends BaseActivity implements View.OnClickListe
     @BindView(R.id.btn_resend)
     Button btn_resend;
 
-    ProgressDialog progressDialog;
 
     public static void launch(Activity activity, String json) {
         Intent intent = new Intent(activity.getBaseContext(), WrongCodeActivity.class);
@@ -54,7 +50,6 @@ public class WrongCodeActivity extends BaseActivity implements View.OnClickListe
 
         phone = getIntent().getStringExtra("json");
 
-        progressDialog = new ProgressDialog(WrongCodeActivity.this);
 
         btn_correct.setOnClickListener(this);
         btn_resend.setOnClickListener(this);
@@ -76,10 +71,7 @@ public class WrongCodeActivity extends BaseActivity implements View.OnClickListe
     public void getData(final String tokenx) {
         if (NetUtil.isNetworkAvailable(getBaseContext())) {
 
-            progressDialog.setTitle("در حال انجام عملیات ورود...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+         showPD();
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.sendSms(API_BASE_URL + "api/app/sendSms", tokenx);
@@ -91,8 +83,7 @@ public class WrongCodeActivity extends BaseActivity implements View.OnClickListe
                         try {
 //                            Log.d("okok", response.raw().toString());
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
-                            if (jsonObject.getBoolean("success")) {
+hidePD();                            if (jsonObject.getBoolean("success")) {
                                 VerifyActivity.launch(WrongCodeActivity.this, tokenx);
                                 exit();
                             }
@@ -112,7 +103,7 @@ public class WrongCodeActivity extends BaseActivity implements View.OnClickListe
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 }

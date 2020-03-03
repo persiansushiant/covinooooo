@@ -1,12 +1,10 @@
 package ir.technopedia.covino.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +36,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.input_phone)
     EditText input_phone;
 
-    ProgressDialog progressDialog;
 
     public static void launch(Activity activity, String json) {
         Intent intent = new Intent(activity.getBaseContext(), LoginActivity.class);
@@ -51,8 +48,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        progressDialog = new ProgressDialog(LoginActivity.this);
 
         String json = getIntent().getStringExtra("json");
         if (!json.equals("")) {
@@ -93,7 +88,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (input_phone.getText().toString().length() == 11)
                 getData(input_phone.getText().toString());
             else
-                showToast("لطفا شماره خود را وارد نمایید.");
+                showToast("لطفا شماره خود را وارد نمایید.",0);
         }
     }
 
@@ -101,10 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void getData(final String tokenx) {
         if (NetUtil.isNetworkAvailable(getBaseContext())) {
 
-            progressDialog.setTitle("در حال انجام عملیات ورود...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+       showPD();
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.sendSms(API_BASE_URL + "api/app/sendSms", tokenx);
@@ -115,7 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (response.isSuccessful()) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
+hidePD();
 //                            showToast(jsonObject.getString("msg"));
                             if (jsonObject.getBoolean("success")) {
                                 VerifyActivity.launch(LoginActivity.this, tokenx);
@@ -136,7 +128,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 }

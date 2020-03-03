@@ -1,7 +1,6 @@
 package ir.technopedia.covino.fragment;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -24,17 +23,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ir.technopedia.covino.BaseActivity;
 import ir.technopedia.covino.BaseFragment;
 import ir.technopedia.covino.R;
-import ir.technopedia.covino.activity.WashSuccessActivity;
 import ir.technopedia.covino.adapter.ContactAdapter;
 import ir.technopedia.covino.model.Contact;
 import ir.technopedia.covino.util.NetUtil;
@@ -68,7 +64,6 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     ContactAdapter adapter;
 
-    ProgressDialog progressDialog;
 
     SharedPreferencesManager sharedPreferencesManager;
 
@@ -92,7 +87,6 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
         ButterKnife.bind(this, v);
 
-        progressDialog = new ProgressDialog(getContext());
 
         sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
 
@@ -130,10 +124,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     public void sendPoke(String phone, String token) {
         if (NetUtil.isNetworkAvailable(getContext())) {
 
-            progressDialog.setTitle("در حال ثبت سیخونک...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            ((BaseActivity) getActivity()).showPD();
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.poke(API_BASE_URL + "api/app/poke", token, phone);
@@ -144,10 +135,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                     if (response.isSuccessful()) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
+                            ((BaseActivity) getActivity()).hidePD();
 //                            if (jsonObject.getBoolean("success")) {
 //                            }
-                            showToast(jsonObject.getString("msg"));
+                            showToast(jsonObject.getString("msg"),1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -163,7 +154,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 
@@ -253,10 +244,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
         if (NetUtil.isNetworkAvailable(getContext())) {
 
-            progressDialog.setTitle("در حال دریافت اطلاعات مخاطبان...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            ((BaseActivity) getActivity()).showPD();
+
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.getWashs(API_BASE_URL + "api/app/getWashs", token, contactsx);
@@ -268,9 +257,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
                         contacts = new ArrayList<>();
                         poked = new ArrayList<>();
+                        ((BaseActivity) getActivity()).hidePD();
+
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
+                            ((BaseActivity) getActivity()).hidePD();
                             if (jsonObject.getBoolean("success")) {
 
                                 JSONArray jsonArray = new JSONArray(jsonObject.getString("others"));
@@ -333,7 +324,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 }

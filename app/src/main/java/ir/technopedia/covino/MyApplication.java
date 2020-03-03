@@ -23,7 +23,7 @@ public class MyApplication extends Application {
 //        ACRA.init(this);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/dana.ttf")
+                .setDefaultFontPath("fonts/lalezar.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );

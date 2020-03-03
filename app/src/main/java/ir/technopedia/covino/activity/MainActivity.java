@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -23,6 +20,7 @@ import butterknife.ButterKnife;
 import ir.technopedia.covino.BaseActivity;
 import ir.technopedia.covino.R;
 import ir.technopedia.covino.fragment.ContactsFragment;
+import ir.technopedia.covino.fragment.LearnFragment;
 import ir.technopedia.covino.fragment.NotifFragment;
 import ir.technopedia.covino.fragment.WashFragment;
 import ir.technopedia.covino.util.NetUtil;
@@ -42,7 +40,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.btn_notifs)
     RelativeLayout btn_notifs;
-
+    @BindView(R.id.notebook_icon)
+    ImageView notebook_icon;
     @BindView(R.id.btn_contacts)
     LinearLayout btn_contacts;
 
@@ -68,6 +67,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     ContactsFragment contactsFragment;
 
     NotifFragment notifFragment;
+    LearnFragment learnFragment;
 
     public static void launch(Activity activity, String json) {
         Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
@@ -95,10 +95,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btn_notifs.setOnClickListener(this);
         btn_contacts.setOnClickListener(this);
         btn_washs.setOnClickListener(this);
-
+        notebook_icon.setOnClickListener(this);
         washFragment = WashFragment.newInstance();
         contactsFragment = ContactsFragment.newInstance();
         notifFragment = NotifFragment.newInstance();
+        learnFragment=LearnFragment.newInstance();
 
         if (!sharedPreferencesManager.getStringValue("messages").equals("")) {
             messages.setText(sharedPreferencesManager.getStringValue("messages"));
@@ -123,14 +124,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.btn_exit: {
-                sharedPreferencesManager.setStringValue("user_id", "");
-                sharedPreferencesManager.setStringValue("token", "");
-                sharedPreferencesManager.setStringValue("phone", "");
-                sharedPreferencesManager.setStringValue("messages", "");
-                sharedPreferencesManager.setStringValue("last_time", "");
-                sharedPreferencesManager.setStringValue("last_date", "");
-                sharedPreferencesManager.setStringValue("counter", "");
-                LoginActivity.launch(MainActivity.this, "");
+//                sharedPreferencesManager.setStringValue("user_id", "");
+//                sharedPreferencesManager.setStringValue("token", "");
+//                sharedPreferencesManager.setStringValue("phone", "");
+//                sharedPreferencesManager.setStringValue("messages", "");
+//                sharedPreferencesManager.setStringValue("last_time", "");
+//                sharedPreferencesManager.setStringValue("last_date", "");
+//                sharedPreferencesManager.setStringValue("counter", "");
+//                LoginActivity.launch(MainActivity.this, "");
                 exit();
             }
             break;
@@ -153,6 +154,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 showFragment(washFragment);
             }
             break;
+            case R.id.notebook_icon:
+
+                resetIcons();
+                Glide.with(this).load(R.drawable.washs).crossFade().into(icon_washs);
+                showFragment(learnFragment);
+
+                break;
         }
 
     }
@@ -164,7 +172,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (isExitable) {
                 super.onBackPressed();
             } else {
-                Toast.makeText(getBaseContext(), "برای خروج دوباره کلیک کنید", Toast.LENGTH_LONG).show();
+                showToast("برای خروج دوباره کلیک کنید", 1);
                 isExitable = true;
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -184,6 +192,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Glide.with(this).load(R.drawable.notifs2).crossFade().into(icon_notifs);
         Glide.with(this).load(R.drawable.contacts2).crossFade().into(icon_contacts);
         Glide.with(this).load(R.drawable.washs2).crossFade().into(icon_washs);
+        Glide.with(this).load(R.drawable.notebook).crossFade().into(notebook_icon);
     }
 
     public void loadFcm() {

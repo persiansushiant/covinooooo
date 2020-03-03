@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
-
+repositories {
+    maven {
+        url "https://jitpack.io"
+        maven { url 'https://maven.fabric.io/public' }
+    }
+}
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -37,6 +42,12 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'com.faendir:acra:4.10.0'
     implementation 'com.karumi:dexter:5.0.0'
+    implementation('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        // exclusion is not necessary, but generally a good idea.
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.0.5'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

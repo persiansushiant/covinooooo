@@ -1,6 +1,5 @@
 package ir.technopedia.covino.activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -44,7 +43,7 @@ public class SplashActivity extends BaseActivity {
                     isLogin(sharedPreferencesManager.getStringValue("phone"), sharedPreferencesManager.getStringValue("token"));
                 }
             }
-        }, 2500);
+        }, 1500);
 
     }
 
@@ -96,7 +95,7 @@ public class SplashActivity extends BaseActivity {
             });
 
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 }

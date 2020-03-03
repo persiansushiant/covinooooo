@@ -1,7 +1,6 @@
 package ir.technopedia.covino.fragment;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ir.technopedia.covino.BaseActivity;
 import ir.technopedia.covino.BaseFragment;
 import ir.technopedia.covino.R;
 import ir.technopedia.covino.adapter.PokeAdapter;
@@ -55,12 +56,15 @@ public class NotifFragment extends BaseFragment implements View.OnClickListener 
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
+
+    @BindView(R.id.txt)
+    TextView txt;
+
     List<Contact> contacts = new ArrayList<>();
     List<Poke> pokes = new ArrayList<>();
 
     PokeAdapter adapter;
 
-    ProgressDialog progressDialog;
 
     SharedPreferencesManager sharedPreferencesManager;
 
@@ -84,7 +88,6 @@ public class NotifFragment extends BaseFragment implements View.OnClickListener 
         View v = inflater.inflate(R.layout.fragment_notif, container, false);
         ButterKnife.bind(this, v);
 
-        progressDialog = new ProgressDialog(getContext());
 
         sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
 
@@ -176,38 +179,49 @@ public class NotifFragment extends BaseFragment implements View.OnClickListener 
 
         if (NetUtil.isNetworkAvailable(getContext())) {
 
-            progressDialog.setTitle("در حال دریافت اطلاعات مخاطبان...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            ((BaseActivity) getActivity()).showPD();
+
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<PokeResponse> call = ramsarfoodService.getPokes(API_BASE_URL + "api/app/getPokes", token, contactsx);
             call.enqueue(new Callback<PokeResponse>() {
                 @Override
                 public void onResponse(Call<PokeResponse> call, Response<PokeResponse> response) {
+                    ((BaseActivity) getActivity()).hidePD();
+                    Log.wtf("soli",response.toString());
 
                     if (response.isSuccessful()) {
+                        ((BaseActivity) getActivity()).hidePD();
 
                         pokes = response.body().getPokes();
-                        adapter.updateAdapter(pokes, contacts);
+                        if (pokes.size() == 0) {
+                            recycler.setVisibility(View.GONE);
+                            txt.setVisibility(View.VISIBLE);
+                        } else {
+                            adapter.updateAdapter(pokes, contacts);
+                            txt.setVisibility(View.GONE);
+
+                        }
 
                         data_layout.setVisibility(View.VISIBLE);
                         permission_layout.setVisibility(View.GONE);
 
                     }
 
-                    progressDialog.dismiss();
 
                 }
 
                 @Override
                 public void onFailure(Call<PokeResponse> call, Throwable t) {
+                    ((BaseActivity) getActivity()).hidePD();
+
                     t.printStackTrace();
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            ((BaseActivity) getActivity()).hidePD();
+
+            showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
     }
 }

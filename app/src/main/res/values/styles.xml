@@ -11,6 +11,7 @@
         <item name="toolbarStyle">@style/AppToolbar</item>
         <item name="android:textColor">@color/iconColor</item>
         <item name="android:fontFamily">@font/iransans_fontfamily</item>
+
     </style>
 
 

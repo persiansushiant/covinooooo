@@ -1,7 +1,6 @@
 package ir.technopedia.covino.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -62,7 +61,6 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
 
     String phone;
 
-    ProgressDialog progressDialog;
 
     public static void launch(Activity activity, String json) {
         Intent intent = new Intent(activity.getBaseContext(), VerifyActivity.class);
@@ -78,7 +76,6 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
 
         phone = getIntent().getStringExtra("json");
 
-        progressDialog = new ProgressDialog(VerifyActivity.this);
 
         btn_correct.setOnClickListener(this);
         btn_resend.setOnClickListener(this);
@@ -205,10 +202,7 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
     public void getData(final String tokenx) {
         if (NetUtil.isNetworkAvailable(getBaseContext())) {
 
-            progressDialog.setTitle("در حال انجام عملیات ورود...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            showPD();
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.sendSms(API_BASE_URL + "api/app/sendSms", tokenx);
@@ -220,13 +214,13 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
                         try {
                             Log.d("okok", response.raw().toString());
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
-                            if (jsonObject.getBoolean("success")) {
-                                showToast("ارسال شد");
+hidePD();
+if (jsonObject.getBoolean("success")) {
+                                showToast("ارسال شد",1);
                                 timer.cancel();
                                 timer.start();
                             }
-                            showToast(jsonObject.getString("msg"));
+                            showToast(jsonObject.getString("msg"),1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -242,17 +236,14 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 
     public void validateCode(final String phone, final String sms) {
         if (NetUtil.isNetworkAvailable(getBaseContext())) {
 
-            progressDialog.setTitle("در حال انجام عملیات ورود...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+           hidePD();
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.verifySms(API_BASE_URL + "api/app/codeValidation", phone, sms);
@@ -263,7 +254,7 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
                     if (response.isSuccessful()) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
+hidePD();
 //                            showToast(jsonObject.getString("msg"));
                             if (jsonObject.getBoolean("success")) {
                                 JSONObject user = jsonObject.getJSONObject("user");
@@ -301,7 +292,7 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
         }
     }
 }

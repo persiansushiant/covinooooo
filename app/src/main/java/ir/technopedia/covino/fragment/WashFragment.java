@@ -1,6 +1,5 @@
 package ir.technopedia.covino.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,9 +19,9 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ir.technopedia.covino.BaseActivity;
 import ir.technopedia.covino.BaseFragment;
 import ir.technopedia.covino.R;
-import ir.technopedia.covino.activity.SuccessCodeActivity;
 import ir.technopedia.covino.activity.WashSuccessActivity;
 import ir.technopedia.covino.util.NetUtil;
 import ir.technopedia.covino.util.ServiceGenerator;
@@ -32,6 +31,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 import static ir.technopedia.covino.util.ServiceGenerator.API_BASE_URL;
 
@@ -48,10 +48,9 @@ public class WashFragment extends BaseFragment {
 
     private int mInterval = 1000;
     private Handler mHandler;
+    public static final int minLimit = 1;
+    int washLimit = 20;
 
-    int washLimit = 45;
-
-    ProgressDialog progressDialog;
 
     SharedPreferencesManager sharedPreferencesManager;
 
@@ -83,6 +82,16 @@ public class WashFragment extends BaseFragment {
                     long diffMinutes = (diff / (60 * 1000)) % 60;
                     long diffHours = (diff / (60 * 60 * 1000)) % 24;
 
+                    if (diff <= minLimit * 60 * 1000) {
+                        btn_wash.setAlpha(.5f);
+
+                        timer.setTextColor(getActivity().getResources().getColor(R.color.md_red_400));
+                        btn_wash.setClickable(false);
+                    } else {
+                        timer.setTextColor(getActivity().getResources().getColor(R.color.md_black_1000));
+
+                        btn_wash.setClickable(true);
+                    }
                     timer.setText(diffHours + ":" + diffMinutes + ":" + diffSeconds);
 
                 }
@@ -113,11 +122,16 @@ public class WashFragment extends BaseFragment {
         ButterKnife.bind(this, v);
         sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
 
-        progressDialog = new ProgressDialog(getContext());
 
         String date = sharedPreferencesManager.getStringValue("last_date");
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
+        new MaterialShowcaseView.Builder(getActivity())
+                .setTarget(btn_wash)
+                .setDismissText("متوجه شدم")
+                .setContentText("هروقت دستاتو میشوری این دکمه رو بزن")
+                .setDelay(1500) // optional but starting animations immediately in onCreate can make them choppy
+                .singleUse("AS") // provide a unique ID used to ensure it is only shown once
+                .show();
         if (date.equals("")) {
             sharedPreferencesManager.setStringValue("last_date", currentDate);
             sharedPreferencesManager.setStringValue("counter", "0");
@@ -137,12 +151,13 @@ public class WashFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (sharedPreferencesManager.getStringValue("counter").equals("")) {
-                    washMyHand(sharedPreferencesManager.getStringValue("token"));
+                    washMyHand(sharedPreferencesManager.getStringValue("token"),sharedPreferencesManager.getStringValue("counter"));
                 } else {
-                    if (sharedPreferencesManager.getStringValue("counter").equals("45")) {
-                        showToast("امروز به حد آخر شست شوی دستان خود رسیده اید.");
+                    if (sharedPreferencesManager.getStringValue("counter").equals("20")) {
+                        showToast("امروز به حد آخر شست شوی دستان خود رسیده اید.", 1);
+
                     } else {
-                        washMyHand(sharedPreferencesManager.getStringValue("token"));
+                        washMyHand(sharedPreferencesManager.getStringValue("token"),sharedPreferencesManager.getStringValue("token"));
                     }
                 }
             }
@@ -172,13 +187,12 @@ public class WashFragment extends BaseFragment {
         mHandler.removeCallbacks(mStatusChecker);
     }
 
-    public void washMyHand(String token) {
+    public void washMyHand(String token, final String counterr) {
+
         if (NetUtil.isNetworkAvailable(getContext())) {
 
-            progressDialog.setTitle("در حال انجام عملیات ورود...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            ((BaseActivity) getActivity()).showPD();
+
 
             VideoShopService ramsarfoodService = ServiceGenerator.createService(VideoShopService.class);
             Call<ResponseBody> call = ramsarfoodService.wash(API_BASE_URL + "api/app/wash", token);
@@ -189,7 +203,7 @@ public class WashFragment extends BaseFragment {
                     if (response.isSuccessful()) {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
-                            progressDialog.dismiss();
+                            ((BaseActivity) getActivity()).hidePD();
                             if (jsonObject.getBoolean("success")) {
                                 String countx = jsonObject.getString("count");
                                 String dateg = jsonObject.getString("dateg");
@@ -202,7 +216,7 @@ public class WashFragment extends BaseFragment {
                                 sharedPreferencesManager.setStringValue("counter", countx);
                                 counter.setText(countx + " / " + washLimit);
                                 startRepeatingTask();
-                                WashSuccessActivity.launch(getActivity(), "");
+                                WashSuccessActivity.launch(getActivity(), "",counterr);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -219,7 +233,9 @@ public class WashFragment extends BaseFragment {
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!");
+            showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
     }
+
+
 }

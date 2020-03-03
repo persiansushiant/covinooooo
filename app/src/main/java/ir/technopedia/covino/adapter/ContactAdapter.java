@@ -67,6 +67,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             viewHolder.poke.setBackgroundResource(R.drawable.btn_primary);
             viewHolder.poke.setColorFilter(ContextCompat.getColor(viewHolder.poke.getContext(), R.color.md_white_1000));
         }
+
     }
 
     @Override
