@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ir.technopedia.covino.BaseActivity;
 import ir.technopedia.covino.R;
+import ir.technopedia.covino.fragment.AchievmentFragment;
 import ir.technopedia.covino.fragment.ContactsFragment;
 import ir.technopedia.covino.fragment.LearnFragment;
 import ir.technopedia.covino.fragment.NotifFragment;
@@ -56,7 +57,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.icon_washs)
     ImageView icon_washs;
-
+    @BindView(R.id.achieve_icon)
+    ImageView achieve_icon;
     @BindView(R.id.messages)
     TextView messages;
 
@@ -68,6 +70,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     NotifFragment notifFragment;
     LearnFragment learnFragment;
+    AchievmentFragment achievmentFragment;
 
     public static void launch(Activity activity, String json) {
         Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
@@ -96,10 +99,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btn_contacts.setOnClickListener(this);
         btn_washs.setOnClickListener(this);
         notebook_icon.setOnClickListener(this);
+        achieve_icon.setOnClickListener(this);
         washFragment = WashFragment.newInstance();
         contactsFragment = ContactsFragment.newInstance();
         notifFragment = NotifFragment.newInstance();
         learnFragment=LearnFragment.newInstance();
+        achievmentFragment=AchievmentFragment.newInstance();
 
         if (!sharedPreferencesManager.getStringValue("messages").equals("")) {
             messages.setText(sharedPreferencesManager.getStringValue("messages"));
@@ -157,8 +162,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.notebook_icon:
 
                 resetIcons();
-                Glide.with(this).load(R.drawable.washs).crossFade().into(icon_washs);
+                Glide.with(this).load(R.drawable.notebook).crossFade().into(notebook_icon);
                 showFragment(learnFragment);
+
+                break;
+            case R.id.achieve_icon:
+
+                resetIcons();
+                Glide.with(this).load(R.drawable.achieve).crossFade().into(achieve_icon);
+                showFragment(achievmentFragment);
 
                 break;
         }
@@ -193,6 +205,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Glide.with(this).load(R.drawable.contacts2).crossFade().into(icon_contacts);
         Glide.with(this).load(R.drawable.washs2).crossFade().into(icon_washs);
         Glide.with(this).load(R.drawable.notebook).crossFade().into(notebook_icon);
+        Glide.with(this).load(R.drawable.achieve).crossFade().into(achieve_icon);
     }
 
     public void loadFcm() {

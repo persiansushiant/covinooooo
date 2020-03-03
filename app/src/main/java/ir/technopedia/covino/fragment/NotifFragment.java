@@ -198,6 +198,7 @@ public class NotifFragment extends BaseFragment implements View.OnClickListener 
                             recycler.setVisibility(View.GONE);
                             txt.setVisibility(View.VISIBLE);
                         } else {
+                            calculatePokes(pokes.size());
                             adapter.updateAdapter(pokes, contacts);
                             txt.setVisibility(View.GONE);
 
@@ -223,5 +224,33 @@ public class NotifFragment extends BaseFragment implements View.OnClickListener 
 
             showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
+    }
+
+    private void calculatePokes(int size) {
+        String s=sharedPreferencesManager.getStringValue("totPokes");
+        int ss=0;
+        try{
+            ss=Integer.parseInt(s)+1;
+
+        }catch (Exception e){
+            ss=0;
+        }
+
+        if(ss==5){
+            sharedPreferencesManager.setStringValue("5", "1");
+        }else if(ss==10){
+            sharedPreferencesManager.setStringValue("6", "1");
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+        }else if(ss==10){
+            sharedPreferencesManager.setStringValue("7", "1");
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+        }
+
+
+
+
+
+
+
     }
 }

@@ -2,6 +2,7 @@ package ir.technopedia.covino.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +89,7 @@ public class WashFragment extends BaseFragment {
                         timer.setTextColor(getActivity().getResources().getColor(R.color.md_red_400));
                         btn_wash.setClickable(false);
                     } else {
+                        btn_wash.setAlpha(1f);
                         timer.setTextColor(getActivity().getResources().getColor(R.color.md_black_1000));
 
                         btn_wash.setClickable(true);
@@ -122,7 +124,7 @@ public class WashFragment extends BaseFragment {
         ButterKnife.bind(this, v);
         sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
 
-
+        Log.wtf("1     ---->", sharedPreferencesManager.getStringValue("2"));
         String date = sharedPreferencesManager.getStringValue("last_date");
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         new MaterialShowcaseView.Builder(getActivity())
@@ -151,13 +153,13 @@ public class WashFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (sharedPreferencesManager.getStringValue("counter").equals("")) {
-                    washMyHand(sharedPreferencesManager.getStringValue("token"),sharedPreferencesManager.getStringValue("counter"));
+                    washMyHand(sharedPreferencesManager.getStringValue("token"), sharedPreferencesManager.getStringValue("counter"));
                 } else {
                     if (sharedPreferencesManager.getStringValue("counter").equals("20")) {
                         showToast("امروز به حد آخر شست شوی دستان خود رسیده اید.", 1);
 
                     } else {
-                        washMyHand(sharedPreferencesManager.getStringValue("token"),sharedPreferencesManager.getStringValue("token"));
+                        washMyHand(sharedPreferencesManager.getStringValue("token"), sharedPreferencesManager.getStringValue("token"));
                     }
                 }
             }
@@ -208,7 +210,7 @@ public class WashFragment extends BaseFragment {
                                 String countx = jsonObject.getString("count");
                                 String dateg = jsonObject.getString("dateg");
                                 String time = jsonObject.getString("time");
-
+                                CalculateBage(countx);
                                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                                 String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                                 sharedPreferencesManager.setStringValue("last_time", dateg + " " + time);
@@ -216,7 +218,7 @@ public class WashFragment extends BaseFragment {
                                 sharedPreferencesManager.setStringValue("counter", countx);
                                 counter.setText(countx + " / " + washLimit);
                                 startRepeatingTask();
-                                WashSuccessActivity.launch(getActivity(), "",counterr);
+                                WashSuccessActivity.launch(getActivity(), "", counterr);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -235,6 +237,51 @@ public class WashFragment extends BaseFragment {
         } else {
             showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
+    }
+
+    private void CalculateBage(String countx) {
+
+
+        if (countx.equalsIgnoreCase("5")) {
+            sharedPreferencesManager.setStringValue("1", "1");
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+
+        } else if (countx.equalsIgnoreCase("10")) {
+            sharedPreferencesManager.setStringValue("2", "1");
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+
+
+        } else if (countx.equalsIgnoreCase("20")) {
+            sharedPreferencesManager.setStringValue("3", "1");
+
+CalculateNewBadge();
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+
+        }
+    }
+
+    private void CalculateNewBadge() {
+        String s=sharedPreferencesManager.getStringValue("NumCompleted");
+        int ss=0;
+        try{
+             ss=Integer.parseInt(s)+1;
+
+        }catch (Exception e){
+            ss=1;
+        }
+        sharedPreferencesManager.setStringValue("NumCompleted",ss+"");
+
+        if(ss==1){
+            sharedPreferencesManager.setStringValue("9", "1");
+        }else if(ss==3){
+            sharedPreferencesManager.setStringValue("10", "1");
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+        }else if(ss==5){
+            sharedPreferencesManager.setStringValue("11", "1");
+            showToast(getActivity().getResources().getString(R.string.congrats), 1);
+        }
+
+
     }
 
 

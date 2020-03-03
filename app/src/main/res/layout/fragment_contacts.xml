@@ -88,4 +88,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txt"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:layout_margin="15dp"
+        android:layout_height="match_parent"
+        android:text="هنوز هیچ کدام از مخاطبینتان وارد اپلیکیشن نشده اند
+در صورت ورود می توانید در شستن دست ها با یکدیگر رقابت کنید!" />
+
 </LinearLayout>

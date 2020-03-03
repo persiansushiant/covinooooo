@@ -5,11 +5,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -58,7 +60,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-
+    @BindView(R.id.txt)
+    TextView txt;
     List<Contact> contacts, contactsTemp = new ArrayList<>();
     List<String> poked = new ArrayList<>();
 
@@ -105,10 +108,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                     @Override
                     public void onClick(View viewx) {
                         String phone = contacts.get(position).getPhone();
-                        phone = phone.replace(" ","");
-                        phone = phone.replace("+98","");
-                        phone = phone.replace("+1","");
-                        phone = phone.replace("+44","");
+                        phone = phone.replace(" ", "");
+                        phone = phone.replace("+98", "");
+                        phone = phone.replace("+1", "");
+                        phone = phone.replace("+44", "");
                         String token = sharedPreferencesManager.getStringValue("token");
                         sendPoke(phone, token);
                         clickPoke(position);
@@ -138,7 +141,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                             ((BaseActivity) getActivity()).hidePD();
 //                            if (jsonObject.getBoolean("success")) {
 //                            }
-                            showToast(jsonObject.getString("msg"),1);
+                            showToast(jsonObject.getString("msg"), 1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -154,7 +157,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
+            showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
     }
 
@@ -304,14 +307,40 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
                                     data_layout.setVisibility(View.VISIBLE);
                                     permission_layout.setVisibility(View.GONE);
+                                    txt.setVisibility(View.GONE);
 
-                                    adapter.updateAdapter(contacts, poked);
+                                    if(contacts.size()!=0) {
+                                        adapter.updateAdapter(contacts, poked);
+
+                                    }else{
+                                        data_layout.setVisibility(View.GONE);
+                                        permission_layout.setVisibility(View.GONE);
+                                        txt.setVisibility(View.VISIBLE);
+                                    }
+
+
+                                } else {
+                                    ((BaseActivity) getActivity()).hidePD();
+
+                                    data_layout.setVisibility(View.GONE);
+                                    permission_layout.setVisibility(View.GONE);
+                                    txt.setVisibility(View.VISIBLE);
                                 }
 
                             }
                         } catch (JSONException e) {
+                            data_layout.setVisibility(View.GONE);
+                            permission_layout.setVisibility(View.GONE);
+                            txt.setVisibility(View.VISIBLE);
+
+                            Log.wtf("errrrorrrchist?",e.toString());
                             e.printStackTrace();
                         } catch (IOException e) {
+                            Log.wtf("errrrorrrchist?",e.toString());
+
+                            data_layout.setVisibility(View.GONE);
+                            permission_layout.setVisibility(View.GONE);
+                            txt.setVisibility(View.VISIBLE);
                             e.printStackTrace();
                         }
                     }
@@ -321,10 +350,13 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     t.printStackTrace();
+                    Log.wtf("errrror"," "+t.toString());
+                    ((BaseActivity) getActivity()).hidePD();
+
                 }
             });
         } else {
-            showToast("لطفا اینترنت گوشی خود را چک کنید!",0);
+            showToast("لطفا اینترنت گوشی خود را چک کنید!", 0);
         }
     }
 }
