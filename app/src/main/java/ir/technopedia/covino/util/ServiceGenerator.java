@@ -2,7 +2,6 @@ package ir.technopedia.covino.util;
 
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.CertificatePinner;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,6 +34,8 @@ public class ServiceGenerator {
 //    }
 
 //    private static OkHttpClient okHttpClient = new OkHttpClient.Builder().certificatePinner(certificatePinner).connectTimeout(35, TimeUnit.SECONDS).writeTimeout(35, TimeUnit.SECONDS).readTimeout(35, TimeUnit.SECONDS).build();
+
+//    private static OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor()).connectTimeout(35, TimeUnit.SECONDS).writeTimeout(35, TimeUnit.SECONDS).readTimeout(35, TimeUnit.SECONDS).build();
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(35, TimeUnit.SECONDS).writeTimeout(35, TimeUnit.SECONDS).readTimeout(35, TimeUnit.SECONDS).build();
 
     private static Retrofit.Builder builder = new Retrofit.Builder().client(okHttpClient).baseUrl(API_BASE_URL).addConverterFactory(GsonConverterFactory.create());
