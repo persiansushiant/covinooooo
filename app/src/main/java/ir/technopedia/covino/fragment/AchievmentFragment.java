@@ -23,16 +23,15 @@ public class AchievmentFragment extends BaseFragment {
     RecyclerView recycler;
     ArrayList<Badge> myArr = new ArrayList<>();
     SharedPreferencesManager sharedPreferencesManager;
+    View rootview;
 
 
     public AchievmentFragment() {
     }
-
     public static AchievmentFragment newInstance() {
         AchievmentFragment fragment = new AchievmentFragment();
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +40,26 @@ public class AchievmentFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_achievment, container, false);
-        ButterKnife.bind(this, v);
-        sharedPreferencesManager = SharedPreferencesManager.getInstance(getActivity());
-        populateData();
-        FillRecycler();
-        Log.wtf("here","here");
 
-        return v;
+        if (rootview == null) {
+            rootview= inflater.inflate(R.layout.fragment_achievment, container, false);
+            ButterKnife.bind(this, rootview);
+            sharedPreferencesManager = SharedPreferencesManager.getInstance(getActivity());
+            populateData();
+            FillRecycler();
+            Log.wtf("here", "here");
+        }else{
+
+        }
+
+        return rootview;
+    }
+    @Override
+    public void onDestroyView() {
+        if (rootview.getParent() != null) {
+            ((ViewGroup)rootview.getParent()).removeView(rootview);
+        }
+        super.onDestroyView();
     }
 
     private void FillRecycler() {
