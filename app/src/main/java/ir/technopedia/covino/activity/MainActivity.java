@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -212,8 +213,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         String fcmToken = FirebaseInstanceId.getInstance().getToken();
 
-//        Log.d("ok", fcmToken);
-
+        Log.wtf("ok", fcmToken);
         if (NetUtil.isNetworkAvailable(getBaseContext())) {
 
             VideoShopService carmanService = ServiceGenerator.createService(VideoShopService.class);

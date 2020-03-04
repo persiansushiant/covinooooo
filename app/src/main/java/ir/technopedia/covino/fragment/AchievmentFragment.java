@@ -46,6 +46,7 @@ public class AchievmentFragment extends BaseFragment {
         sharedPreferencesManager = SharedPreferencesManager.getInstance(getActivity());
         populateData();
         FillRecycler();
+        Log.wtf("here","here");
 
         return v;
     }
